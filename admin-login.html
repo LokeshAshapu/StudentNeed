@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Student Needs</title>
+    <link rel="stylesheet" href="./admin.css">
+</head>
+<body class="admin-login">
+    <div class="login-container">
+        <div class="login-box">
+            <h1><img src="./logo.png" alt="Student Needs" width="50" style="border-radius: 10px;"> Admin Panel</h1>
+            <form id="adminLoginForm" action="admin-login.php" method="POST">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <!-- <?php if (isset($_GET['error'])): ?>
+    <p style="color:red;">Invalid username or password.</p>
+  <?php endif; ?> -->
+                <h4>if you are not an admin? <a href="login.html">click</a></h4>
+            </form>
+
+        </div>
+    </div>
+</body>
+</html>

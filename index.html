@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./logo.png" type="image/x-icon">
+    <title>Student Needs</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-container container">
+                <input type="checkbox" name="" id="">
+                <div class="hamburger-lines">
+                    <span class="line line1"></span>
+                    <span class="line line2"></span>
+                    <span class="line line3"></span>
+                </div>
+                <ul class="menu-items">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="./about.html">About</a></li>
+                    <li><a href="./testinomial.html">Testimonial</a></li>
+                    <li><a href="./login.html" id="loginBtn">Login</a></li>
+                </ul>
+                <h1 class="logo" style="color: black; align-items: center;"><a href="index.html">Student Needs</a></h1>
+            </div>
+        </nav>
+    </header>
+    <center>
+        <h1 class="about" style="padding-top: 100px;">Our Main Motto</h1>
+        <h4 class="moto">"Say Goodbye to Exam Stress – We've Got You Covered!"</h4>
+        <div class="body">
+            <img src="./img3.jpg" alt="Our Moto" class="img-our-moto" height="400px">
+            <center>
+                <p class="our-moto">
+                    When exams are around the corner, every student starts feeling the pressure.
+                    We created a platform to make preparation smoother by giving access to all essential PDFs and materials
+                    in
+                    one place.<br><br>
+                    Preparing for exams can be stressful, but we're here to make it a little easier. Our goal is to reduce
+                    exam
+                    anxiety by providing easy access to well-organized, reliable PDF study materials. Whether you're
+                    revising a
+                    tough subject or catching up on missed notes, you'll find helpful resources that match your syllabus and
+                    learning pace. No more endless searching—just the right content at your fingertips to help you stay
+                    focused,
+                    confident, and ready for success.
+                </p>
+            </center>
+        </div>
+    </center>
+    <center>
+        <h1 class="about">📖 Study Methodologies for Engineering Students</h1>
+        <div class="body" style="padding: 50px;">
+            <img src="./da3ad8b9-1312-48c2-89f9-2a0501dfaa00.jpg" alt="Top 6 study methods" id="img-our-moto"
+                class="img-our-moto-1">
+            <div class="our-moto-1" style=" text-align: left;">
+                <li>Pomodoro Technique ⏲️</li></br></br>
+                <li>Active Recall 💡</li></br></br>
+                <li>Spaced Repetition 📆</li></br></br>
+                <li>Feynman Technique 🧠</li></br></br>
+                <li>Group Study 🤝</li></br></br>
+                <li>Mind Mapping 🗺️</li></br></br>
+            </div>
+        </div>
+    </center>
+
+    <main class="main-1">
+        <h1 class="about" style="text-align: center; margin-top: -1vh; padding: 20px;">Upload Here</h1>
+        <div class="upload-form" id="upload-form">
+            <center>
+                <form id="Uploadform" action="#" method="POST" enctype="multipart/form-data">
+                    <center>
+                        <div class="input-group">
+                            <label>Year</label>
+                            <input type="number" name="year" class="YearLabel" min="1" max="4"
+                                title="Enter your year of study" placeholder="Year (1-4)" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Semester</label>
+                            <input type="number" name="semester" class="SemLabel" min="1" max="2"
+                                title="Enter your semester" placeholder="Semester (1-2)" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Branch</label>
+                            <input type="text" name="branch" class="Branch" title="Enter your branch"
+                                placeholder="Enter your branch" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Subject</label>
+                            <input type="text" name="subject" class="Subject" title="Enter the subject name"
+                                placeholder="Enter the subject name" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>File</label>
+                            <input type="file" name="file" id="fileupload" class="fileupload" title="Upload your file"
+                                placeholder="Choose a file" readonly>
+                        </div>
+                        </br>
+                        <button type="submit" class="submit-btn" onclick="window.location.href='login.html'; return false;">Submit</button>
+                    </center>
+                </form>
+            </center>
+        </div>
+        <button onclick="scrollToTop()" id="scrollTopBtn" title="Go to top">↑</button>
+    </main>
+
+    <footer style="padding: 20px;">
+        <center>
+            <h4 class="moto">Team Student Need</h4>
+        </center>
+        <center>
+            <div>
+                <h2>Follow us</h2>
+                <div class="social-media">
+                    <a href="mailto:lokeshashapu@gmail.com" class="gmail" target="_blank">
+                        <img src="./gmail1.png" alt="gmail" style="border-radius: 10px; padding: 5px;" width="45px"
+                            height="45px">
+                    </a>
+                    <a href="https://www.instagram.com/lokeshashapu/" class="insta" target="_blank">
+                        <img src="./insta.png" alt="Instagram" style="border-radius: 10px; padding: 5px;" width="45px"
+                            height="45px">
+                    </a>
+                    <a href="https://www.linkedin.com/in/lokeshashapu/" class="linkedin" target="_blank">
+                        <img src="./linkedin.png" alt="LinkedIn" style=" border-radius: 10px; padding: 5px;" width="45px"
+                            height="45px">
+                    </a>
+
+                </div>
+            </div>
+            <div>
+                <div>
+
+                </div>
+            </div>
+            <p>&copy; 2025 Student Need.</p>
+        </center>
+    </footer>
+</body>
+<script src="./script.js">
+
+</script>
+
+</html>

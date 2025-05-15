@@ -1,0 +1,18 @@
+# Deny access to .htaccess
+<Files .htaccess>
+Order allow,deny
+Deny from all
+</Files>
+
+# Deny access to files with extensions .ini, .log, .sql
+<FilesMatch "\.(ini|log|sql)$">
+Order allow,deny
+Deny from all
+</FilesMatch>
+
+# Protect against XSS, clickjacking, etc.
+<IfModule mod_headers.c>
+    Header set X-XSS-Protection "1; mode=block"
+    Header always append X-Frame-Options SAMEORIGIN
+    Header set X-Content-Type-Options nosniff
+</IfModule>
