@@ -125,7 +125,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
                         <td>
                             <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                                 <a href="dashboard.php?action=delete&id=<?= $row['id']; ?>"
-                                    onclick="return confirm('Delete this file?');"  class="download-btn">
+                                    onclick="return confirm('Delete this file?');" class="download-btn">
                                     Delete
                                 </a>
                             <?php else: ?>
@@ -141,6 +141,33 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
             <?php endif; ?>
         </tbody>
     </table>
+    <script>
+        const {
+            data,
+            error
+        } = await supabase
+            .from('files')
+            .select('*')
+            .order('uploaded_at', {
+                ascending: false
+            });
+
+        data.forEach(file => {
+            const a = document.createElement('a');
+            a.href = file.file_url;
+            a.textContent = file.file_name;
+            a.target = "_blank";
+            document.body.appendChild(a);
+        });
+        const {
+            data: {
+                user
+            }
+        } = await supabase.auth.getUser();
+        if (!user) {
+            window.location.href = "login.html";
+        }
+    </script>
 </body>
 
 </html>

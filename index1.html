@@ -103,6 +103,15 @@
     </footer>
 </body>
 <script src="./script.js">
+    const fileInput = document.querySelector('#pdfInput');
+    const file = fileInput.files[0];
+
+    const { data, error } = await supabase.storage
+        .from('student-files')
+        .upload(`uploads/${file.name}`, file);
+    const { publicUrl } = supabase.storage
+        .from('student-files')
+        .getPublicUrl(`uploads/${file.name}`);
 
 </script>
 
