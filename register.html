@@ -14,22 +14,29 @@
 </head>
 
 <body>
-    <form onsubmit="return validateRegister()" class="Login-form" id="registerForm">
-        <center style="padding-top: 10px;">
-            <h2>Registration Form</h2>
-        </center>
-        </br></br>
-        <label for="name">Full Name:</label>
-        <input type="text" name="full_name" id="full_name" placeholder="Full Name" required><br>
-        <label for="mail">Email:</label>
-        <input type="email" name="email" id="email" placeholder="Enter your email" required>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" placeholder="Enter Your passowd" required>
-        <label for="confirm-password">Confirm Password:</label>
-        <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Your Password"
-            required></br></br>
-        <center><button type="submit" class="submit-btn">Register</button></center></br>
-        <h5>Already has an account? <a href="login.html">Login now</a></h5>
+    <form onsubmit="return validateRegister()" class="Login-form" id="registerForm" method="POST" action="register.php">
+        <input type="text" name="full_name" required>
+        <input type="email" name="email" required>
+        <input type="password" name="password" required>
+        <input type="password" name="confirm_password" required>
+        <button type="submit">Register</button>
+    </form>
+    >
+    <center style="padding-top: 10px;">
+        <h2>Registration Form</h2>
+    </center>
+    </br></br>
+    <label for="name">Full Name:</label>
+    <input type="text" name="full_name" id="full_name" placeholder="Full Name" required><br>
+    <label for="mail">Email:</label>
+    <input type="email" name="email" id="email" placeholder="Enter your email" required>
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" placeholder="Enter Your passowd" required>
+    <label for="confirm-password">Confirm Password:</label>
+    <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Your Password"
+        required></br></br>
+    <center><button type="submit" class="submit-btn">Register</button></center></br>
+    <h5>Already has an account? <a href="login.html">Login now</a></h5>
     </form>
     <script src="./script.js">
         const supabaseUrl = "https://snhqgaxxzccpqbfmjedm.supabase.co";
