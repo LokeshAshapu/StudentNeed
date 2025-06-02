@@ -144,24 +144,41 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
         </tbody>
     </table>
     <script>
+        const supabaseUrl = "https://snhqgaxxzccpqbfmjedm.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuaHFnYXh4emNjcHFiZm1qZWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2ODMyMzksImV4cCI6MjA2NDI1OTIzOX0.QykBV1hJH5y0cUcm6Xnb6wtxKaKzq6jUOZudMzGLwEY";
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
         document.addEventListener("DOMContentLoaded", async () => {
             const {
                 data: files,
                 error
-            } = await supabase.from("uploads").select("*").order("uploaded_at", {
-                ascending: false
-            });
-            if (error) return alert("Error loading files.");
+            } = await supabase
+                .from("uploads")
+                .select("*")
+                .order("uploaded_at", {
+                    ascending: false
+                });
+
+            if (error) {
+                alert("Failed to load files: " + error.message);
+                return;
+            }
 
             const table = document.getElementById("fileTable");
-            files.forEach(f => {
+
+            if (files.length === 0) {
+                table.innerHTML = `<tr><td colspan="6">No files uploaded yet.</td></tr>`;
+                return;
+            }
+
+            files.forEach(file => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-          <td>${f.year}</td>
-          <td>${f.semester}</td>
-          <td>${f.branch}</td>
-          <td>${f.subject}</td>
-          <td><a href="${f.file_url}" target="_blank">${f.file_name}</a></td>
+          <td>${file.year}</td>
+          <td>${file.semester}</td>
+          <td>${file.branch}</td>
+          <td>${file.subject}</td>
+          <td>${file.filename}</td>
+          <td><a href="${file.file_url}" class="download-btn" target="_blank">Download</a></td>
         `;
                 table.appendChild(row);
             });

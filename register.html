@@ -32,53 +32,10 @@
         <h5>Already has an account? <a href="login.html">Login now</a></h5>
     </form>
     <script src="./script.js">
-        // document.addEventListener("DOMContentLoaded", () => {
-        //     const params = new URLSearchParams(window.location.search);
+        const supabaseUrl = "https://snhqgaxxzccpqbfmjedm.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuaHFnYXh4emNjcHFiZm1qZWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2ODMyMzksImV4cCI6MjA2NDI1OTIzOX0.QykBV1hJH5y0cUcm6Xnb6wtxKaKzq6jUOZudMzGLwEY";
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        //     const fullName = params.get("full_name");
-        //     const email = params.get("email");
-        //     const password = params.get("password");
-        //     const confirmPassword = params.get("confirm_password");
-
-        //     if (fullName) document.getElementById("full_name").value = fullName;
-        //     if (email) document.getElementById("email").value = email;
-        //     if (password) document.getElementById("password").value = password;
-        //     if (confirmPassword) document.getElementById("confirm_password").value = confirmPassword;
-        // });
-        // function validateRegister() {
-        //     const name = document.getElementById("full_name").value.trim();
-        //     const email = document.getElementById("email").value.trim();
-        //     const password = document.getElementById("password").value;
-        //     const confirm = document.getElementById("confirm_password").value;
-
-        //     if (!name || !email || !password || !confirm) {
-        //         alert("All fields are required.");
-        //         return false;
-        //     }
-
-        //     if (!email.includes("@")) {
-        //         alert("Invalid email.");
-        //         return false;
-        //     }
-
-        //     if (password.length < 6) {
-        //         alert("Password must be at least 6 characters.");
-        //         return false;
-        //     }
-
-        //     if (password !== confirm) {
-        //         alert("Passwords do not match.");
-        //         return false;
-        //     }
-
-        //     return true;
-        //     if (true) {
-        //         window.location.href = "./index.html"
-        //     }
-        //     else {
-        //         alert("please re register.");
-        //     }
-        // }
         document.getElementById("registerForm").addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -87,22 +44,41 @@
             const password = document.getElementById("password").value;
             const confirm_password = document.getElementById("confirm_password").value;
 
+            if (!full_name || !email || !password || !confirm_password) {
+                alert("All fields are required.");
+                return;
+            }
+
+            if (!email.includes("@")) {
+                alert("Invalid email format.");
+                return;
+            }
+
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters.");
+                return;
+            }
+
             if (password !== confirm_password) {
                 alert("Passwords do not match.");
                 return;
             }
 
             const { data, error } = await supabase.auth.signUp({ email, password });
+
             if (error) {
-                alert("Signup error: " + error.message);
+                alert("Signup failed: " + error.message);
                 return;
             }
 
             const userId = data.user?.id;
             if (userId) {
-                const { error: dbError } = await supabase.from("users").insert([{ id: userId, full_name }]);
+                const { error: dbError } = await supabase
+                    .from("users")
+                    .insert([{ id: userId, full_name, email, password }]);
+
                 if (dbError) {
-                    alert("Database error: " + dbError.message);
+                    alert("Database insert failed: " + dbError.message);
                     return;
                 }
             }

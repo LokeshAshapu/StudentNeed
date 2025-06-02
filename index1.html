@@ -105,35 +105,61 @@
     </footer>
 </body>
 <script src="./script.js">
-    document.getElementById("uploadForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const year = year.value;
-        const semester = semester.value;
-        const branch = branch.value;
-        const subject = subject.value;
-        const file = fileInput.files[0];
+    const supabaseUrl = "https://snhqgaxxzccpqbfmjedm.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuaHFnYXh4emNjcHFiZm1qZWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2ODMyMzksImV4cCI6MjA2NDI1OTIzOX0.QykBV1hJH5y0cUcm6Xnb6wtxKaKzq6jUOZudMzGLwEY";
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        const { data: { user }, error: userErr } = await supabase.auth.getUser();
-        if (userErr || !user) return alert("Please log in first.");
+    const uploadForm = document.getElementById('uploadForm');
+
+    uploadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const year = document.getElementById('year').value;
+        const semester = document.getElementById('semester').value;
+        const branch = document.getElementById('branch').value;
+        const subject = document.getElementById('subject').value;
+        const file = document.getElementById('fileupload').files[0];
+
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) {
+            alert('You must be logged in to upload.');
+            window.location.href = 'login.html';
+            return;
+        }
 
         const filePath = `${user.id}/${Date.now()}-${file.name}`;
-        const { error: uploadErr } = await supabase.storage.from("student-files").upload(filePath, file);
-        if (uploadErr) return alert(uploadErr.message);
+        const { error: uploadError } = await supabase.storage.from('student-files').upload(filePath, file);
+        if (uploadError) {
+            alert('Upload failed: ' + uploadError.message);
+            return;
+        }
 
-        const { data: { publicUrl } } = supabase.storage.from("student-files").getPublicUrl(filePath);
-        await supabase.from("uploads").insert([{
+        const { data } = supabase.storage.from('student-files').getPublicUrl(filePath);
+        const fileUrl = data.publicUrl;
+
+        const { error: dbError } = await supabase.from('uploads').insert([{
             user_id: user.id,
             year,
             semester,
             branch,
             subject,
             file_name: file.name,
-            file_url: publicUrl
+            file_url: fileUrl,
         }]);
 
-        alert("File uploaded successfully!");
+        if (dbError) {
+            alert('Error saving file metadata: ' + dbError.message);
+            return;
+        }
+
+        alert('File uploaded successfully!');
         uploadForm.reset();
     });
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        window.location.href = 'login.html';
+    });
+
 </script>
 
 </html>

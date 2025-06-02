@@ -28,16 +28,24 @@
         <h5>If you are an admin? <a href="admin-login.html">admin-login</a></h5>
     </form>
     <script src="script.js">
-        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+        const supabaseUrl = "https://snhqgaxxzccpqbfmjedm.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuaHFnYXh4emNjcHFiZm1qZWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2ODMyMzksImV4cCI6MjA2NDI1OTIzOX0.QykBV1hJH5y0cUcm6Xnb6wtxKaKzq6jUOZudMzGLwEY";
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        const loginForm = document.getElementById("loginForm");
+        loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const email = email.value;
-            const password = password.value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
             const { error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) return alert(error.message);
+            if (error) {
+                alert("Login failed: " + error.message);
+                return;
+            }
 
-            alert("Login successful");
-            window.location.href = "index.html";
+            alert("Login successful!");
+            window.location.href = "index1.html";
         });
     </script>
 </body>
