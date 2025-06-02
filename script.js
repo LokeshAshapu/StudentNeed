@@ -16,23 +16,6 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById("loginBtn").style.display = user ? "none" : "inline-block";
     document.getElementById("logoutBtn").style.display = user ? "inline-block" : "none";
 });
-// window.addEventListener('DOMContentLoaded', () => {
-//     fetch('session_status.php')
-//         .then(response => response.json())
-//         .then(data => {
-//             const loginBtn = document.getElementById('loginBtn');
-//             const logoutBtn = document.getElementById('logoutBtn');
-
-//             if (data.loggedIn) {
-//                 if (loginBtn) loginBtn.style.display = 'none';
-//                 if (logoutBtn) logoutBtn.style.display = 'inline-block';
-//             } else {
-//                 if (loginBtn) loginBtn.style.display = 'inline-block';
-//                 if (logoutBtn) logoutBtn.style.display = 'none';
-//             }
-//         })
-//         .catch(error => console.error('Error checking session status:', error));
-// });
 
 window.logout = () => {
     signOut(auth).then(() => {

@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Student Needs</title>
     <link rel="stylesheet" href="./admin.css">
 </head>
+
 <body class="admin-login">
     <div class="login-container">
         <div class="login-box">
             <h1><img src="./logo.png" alt="Student Needs" width="50" style="border-radius: 10px;"> Admin Panel</h1>
-            <form id="adminLoginForm" action="admin-login.php" method="POST">
+            <form id="adminLoginForm">
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" required>
@@ -20,13 +22,44 @@
                     <input type="password" id="password" name="password" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
-                <!-- <?php if (isset($_GET['error'])): ?>
-    <p style="color:red;">Invalid username or password.</p>
-  <?php endif; ?> -->
                 <h4>if you are not an admin? <a href="login.html">click</a></h4>
             </form>
 
         </div>
     </div>
+    <script>
+        const supabaseUrl = "https://snhqgaxxzccpqbfmjedm.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuaHFnYXh4emNjcHFiZm1qZWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2ODMyMzksImV4cCI6MjA2NDI1OTIzOX0.QykBV1hJH5y0cUcm6Xnb6wtxKaKzq6jUOZudMzGLwEY";
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+            if (error) {
+                alert('Login failed: ' + error.message);
+                return;
+            }
+
+            const { user } = data;
+            const { data: profile, error: profileError } = await supabase
+                .from('authors')
+                .select('role')
+                .eq('id', user.id)
+                .single();
+
+            if (profileError || !profile || profile.role !== 'admin') {
+                alert('Access denied. You are not an admin.');
+                return;
+            }
+
+            localStorage.setItem('isAdmin', 'true');
+            window.location.href = 'dashboard.html';
+        });
+    </script>
 </body>
+
 </html>
