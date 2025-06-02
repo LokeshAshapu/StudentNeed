@@ -37,6 +37,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
     <meta charset="UTF-8">
     <title>Uploaded Files | Student Need</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="scripts/main.js" defer></script>
     <style>
         table {
             width: 90%;
@@ -142,31 +144,28 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
         </tbody>
     </table>
     <script>
-        const {
-            data,
-            error
-        } = await supabase
-            .from('files')
-            .select('*')
-            .order('uploaded_at', {
+        document.addEventListener("DOMContentLoaded", async () => {
+            const {
+                data: files,
+                error
+            } = await supabase.from("uploads").select("*").order("uploaded_at", {
                 ascending: false
             });
+            if (error) return alert("Error loading files.");
 
-        data.forEach(file => {
-            const a = document.createElement('a');
-            a.href = file.file_url;
-            a.textContent = file.file_name;
-            a.target = "_blank";
-            document.body.appendChild(a);
+            const table = document.getElementById("fileTable");
+            files.forEach(f => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+          <td>${f.year}</td>
+          <td>${f.semester}</td>
+          <td>${f.branch}</td>
+          <td>${f.subject}</td>
+          <td><a href="${f.file_url}" target="_blank">${f.file_name}</a></td>
+        `;
+                table.appendChild(row);
+            });
         });
-        const {
-            data: {
-                user
-            }
-        } = await supabase.auth.getUser();
-        if (!user) {
-            window.location.href = "login.html";
-        }
     </script>
 </body>
 

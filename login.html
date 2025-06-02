@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="./style.css">
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="scripts/main.js" defer></script>
     <title>Student Needs</title>
     <link rel="icon" href="./logo.png" type="image/x-icon">
 </head>
@@ -18,7 +20,7 @@
         </center>
         </br></br>
         <label for="mail">Email:</label>
-        <input type="email" name="email" id="mail" placeholder="Enter your email" required>
+        <input type="email" name="email" id="email" placeholder="Enter your email" required>
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" placeholder="Enter Your passowd" required></br></br>
         <center><button type="submit" class="submit-btn">Login</button></center></br>
@@ -26,44 +28,17 @@
         <h5>If you are an admin? <a href="admin-login.html">admin-login</a></h5>
     </form>
     <script src="script.js">
-        function validateLogin() {
-            const email = document.getElementById("email").value.trim();
-            const password = document.getElementById("password").value;
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = email.value;
+            const password = password.value;
 
-            if (!email || !password) {
-                alert("All fields are required.");
-                return false;
-            }
+            const { error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) return alert(error.message);
 
-            if (!email.includes("@")) {
-                alert("Invalid email format.");
-                return false;
-            }
-
-            return true;
-
-            if (true) {
-                window.location.href = "./index.html"
-            }
-            else {
-                alert("Invalid email or password.");
-            }
-        }
-        document.querySelector('#loginForm').addEventListener('submit', function (e) {
-            const email = document.querySelector('#email').value;
-            const password = document.querySelector('#password').value;
-            if (!email || !password) {
-                alert("Please fill in all fields.");
-                e.preventDefault();
-            }
+            alert("Login successful");
+            window.location.href = "index.html";
         });
-        const { session, error } = await supabase.auth.signInWithPassword({
-            email: 'email@example.com',
-            password: 'yourPassword',
-        });
-        const supabaseUrl = "https://snhqgaxxzccpqbfmjedm.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuaHFnYXh4emNjcHFiZm1qZWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2ODMyMzksImV4cCI6MjA2NDI1OTIzOX0.QykBV1hJH5y0cUcm6Xnb6wtxKaKzq6jUOZudMzGLwEY";
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
     </script>
 </body>
 
