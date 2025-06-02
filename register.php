@@ -1,50 +1,65 @@
 <?php
+
+header('Access-Control-Allow-Origin: *'); 
+header('Content-Type: text/plain; charset=utf-8');
+
 $host = "localhost";
 $user = "root";
 $pass = "";
 $db = "student_need";
 
 $conn = new mysqli($host, $user, $pass, $db);
+
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    http_response_code(500);
+    echo "Database connection failed: " . $conn->connect_error;
+    exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $full_name = trim($_POST["full_name"]);
-    $email = trim($_POST["email"]);
-    $password = $_POST["password"];
-    $confirm_password = $_POST["confirm_password"];
+    $full_name = trim($_POST["full_name"] ?? "");
+    $email = trim($_POST["email"] ?? "");
+    $password = $_POST["password"] ?? "";
 
-    if ($password !== $confirm_password) {
-        echo "Passwords do not match.";
+    if (!$full_name || !$email || !$password) {
+        http_response_code(400);
+        echo "Missing required fields.";
         exit();
     }
 
-    $check_sql = "SELECT id FROM users WHERE email = ?";
-    $check_stmt = $conn->prepare($check_sql);
-    $check_stmt->bind_param("s", $email);
-    $check_stmt->execute();
-    $check_stmt->store_result();
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        http_response_code(400);
+        echo "Invalid email format.";
+        exit();
+    }
 
-    if ($check_stmt->num_rows > 0) {
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+    $checkSql = "SELECT id FROM users WHERE email = ?";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("s", $email);
+    $checkStmt->execute();
+    $checkStmt->store_result();
+
+    if ($checkStmt->num_rows > 0) {
+        http_response_code(409);
         echo "Email already registered.";
-        $check_stmt->close();
+        $checkStmt->close();
         $conn->close();
         exit();
     }
-    $check_stmt->close();
-
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $checkStmt->close();
 
     $sql = "INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $full_name, $email, $hashed_password);
+    $stmt->bind_param("sss", $full_name, $email, $password_hash);
 
     if ($stmt->execute()) {
-        header("Location: ./index.html");
-        exit();
+        http_response_code(200);
+        echo "User registered successfully.";
     } else {
-        echo "Error: " . htmlspecialchars($stmt->error);
+        http_response_code(500);
+        echo "Database insert error: " . $stmt->error;
     }
 
     $stmt->close();

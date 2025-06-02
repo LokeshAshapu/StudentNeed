@@ -2,38 +2,39 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./style.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="scripts/main.js" defer></script>
-    <title>Student Needs</title>
-    <link rel="icon" href="./logo.png" type="image/x-icon">
+    <title>Student Needs - Register</title>
+    <link rel="icon" href="./logo.png" type="image/x-icon" />
 </head>
 
 <body>
-    <form onsubmit="return validateRegister()" class="Login-form" id="registerForm" method="POST" action="https://student-need.infy.uk/register.php">
-    <center style="padding-top: 10px;">
-        <h2>Registration Form</h2>
-    </center>
-    </br></br>
-    <label for="name">Full Name:</label>
-    <input type="text" name="full_name" id="full_name" placeholder="Full Name" required><br>
-    <label for="mail">Email:</label>
-    <input type="email" name="email" id="email" placeholder="Enter your email" required>
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password" placeholder="Enter Your passowd" required>
-    <label for="confirm-password">Confirm Password:</label>
-    <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Your Password"
-        required></br></br>
-    <center><button type="submit" class="submit-btn">Register</button></center></br>
-    <h5>Already has an account? <a href="login.html">Login now</a></h5>
+    <form id="registerForm" class="Login-form">
+        <center style="padding-top: 10px;">
+            <h2>Registration Form</h2>
+        </center>
+        <br /><br />
+        <label for="full_name">Full Name:</label>
+        <input type="text" name="full_name" id="full_name" placeholder="Full Name" required /><br />
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" placeholder="Enter your email" required />
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" placeholder="Enter your password" required />
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Your Password" required />
+        <br /><br />
+        <center>
+            <button type="submit" class="submit-btn">Register</button>
+        </center>
+        <br />
+        <h5>Already have an account? <a href="login.html">Login now</a></h5>
     </form>
-    <script src="./script.js">
+
+    <script>
         const supabaseUrl = "https://snhqgaxxzccpqbfmjedm.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuaHFnYXh4emNjcHFiZm1qZWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2ODMyMzksImV4cCI6MjA2NDI1OTIzOX0.QykBV1hJH5y0cUcm6Xnb6wtxKaKzq6jUOZudMzGLwEY";
+        const supabaseKey = "YOUR_SUPABASE_ANON_KEY_HERE"; // replace this!
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         document.getElementById("registerForm").addEventListener("submit", async (e) => {
@@ -48,17 +49,14 @@
                 alert("All fields are required.");
                 return;
             }
-
             if (!email.includes("@")) {
                 alert("Invalid email format.");
                 return;
             }
-
             if (password.length < 6) {
                 alert("Password must be at least 6 characters.");
                 return;
             }
-
             if (password !== confirm_password) {
                 alert("Passwords do not match.");
                 return;
@@ -71,20 +69,28 @@
                 return;
             }
 
-            const userId = data.user?.id;
-            if (userId) {
-                const { error: dbError } = await supabase
-                    .from("users")
-                    .insert([{ id: userId, full_name, email, password }]);
+            try {
+                const response = await fetch("https://student-need.infy.uk/register.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams({
+                        full_name,
+                        email,
+                        password
+                    })
+                });
 
-                if (dbError) {
-                    alert("Database insert failed: " + dbError.message);
-                    return;
+                const resultText = await response.text();
+
+                if (response.ok) {
+                    alert("Registration successful. Please check your email to confirm.");
+                    window.location.href = "login.html";
+                } else {
+                    alert("Server error: " + resultText);
                 }
+            } catch (err) {
+                alert("Failed to save data: " + err.message);
             }
-
-            alert("Registration successful. Please check your email to confirm.");
-            window.location.href = "login.html";
         });
     </script>
 </body>
