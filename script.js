@@ -1,12 +1,15 @@
+
 window.toggleMenu = function () {
     const menu = document.getElementById("navbarMenu");
     menu.classList.toggle("show");
 };
 
+
 window.onscroll = function () {
     const btn = document.getElementById("scrollTopBtn");
     btn.style.display = (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) ? "block" : "none";
 };
+
 
 window.scrollToTop = function () {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -17,11 +20,13 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById("logoutBtn").style.display = user ? "inline-block" : "none";
 });
 
+
 window.logout = () => {
     signOut(auth).then(() => {
         window.location.href = "index1.html";
     });
 };
+
 
 $(document).ready(function () {
     var scrollTop = $(window).scrollTop();
