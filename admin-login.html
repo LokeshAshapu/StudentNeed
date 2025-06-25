@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +8,7 @@
     <title>Admin Login - Student Needs</title>
     <link rel="stylesheet" href="./admin.css">
 </head>
+
 
 <body class="admin-login">
     <div class="login-container">
@@ -31,7 +33,8 @@
         const supabaseUrl = "https://snhqgaxxzccpqbfmjedm.supabase.co";
         const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuaHFnYXh4emNjcHFiZm1qZWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2ODMyMzksImV4cCI6MjA2NDI1OTIzOX0.QykBV1hJH5y0cUcm6Xnb6wtxKaKzq6jUOZudMzGLwEY";
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+       
+ document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const email = document.getElementById('email').value;
@@ -43,6 +46,7 @@
                 alert('Login failed: ' + error.message);
                 return;
             }
+
 
             const { user } = data;
             const { data: profile, error: profileError } = await supabase
